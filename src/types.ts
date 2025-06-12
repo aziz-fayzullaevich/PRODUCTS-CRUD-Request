@@ -34,3 +34,17 @@ export type CustomPaginationProps = {
   value: number;
   onChange: (page: number) => void;
 };
+
+export type INITIAL_VALUE = {
+  "title": string,
+  "price": number,
+  "description": string,
+  "categoryId": number,
+  "images": string[]
+}
+
+export type ProductFormProps = {
+  title: string;
+  initialValues: INITIAL_VALUE;
+  onSubmit: (values: INITIAL_VALUE) => void;
+};

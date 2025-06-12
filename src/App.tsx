@@ -5,6 +5,8 @@ import { Table } from "./ui/Table";
 import { useGetProducts } from "./queries";
 import { LoaderWithError } from "./ui/LoaderWithError";
 import { CustomPagination } from "./export-ui/CustopPagination";
+import { modals } from "@mantine/modals";
+import { CreateProduct } from "./components/CreateProduct";
 
 const App = () => {
   const [activePage, setActivePage] = useState(1);
@@ -38,12 +40,19 @@ const App = () => {
     </TableM.Tr>
   ));
 
+  const createProduct = () => {
+    modals.open({
+      children: <CreateProduct />,
+      title: 'Create Product'
+    })
+  }
+
   return (
     <div className="container">
       <Stack gap="30">
         <Flex align="center" justify="space-between">
           <Title>Products</Title>
-          <Button rightSection={<HiMiniPlusCircle />}>Create</Button>
+          <Button rightSection={<HiMiniPlusCircle />} onClick={createProduct}>Create</Button>
         </Flex>
 
         <LoaderWithError isLoading={isLoading} error={error}>
