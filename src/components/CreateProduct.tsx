@@ -8,7 +8,7 @@ const initialValues: INITIAL_VALUE = {
     price: 0,
     description: "",
     categoryId: 1,
-    images: ["https://placeimg.com/640/480/any"],
+    images: [""],
 };
 
 export const CreateProduct = () => {

@@ -12,4 +12,13 @@ export const getProducts = async ({ activePage, limit }: { activePage: number, l
 export const createProduct = async (newProduct: ProductBody): Promise<Product> => {
     const { data } = await api.post<Product>(`/products`, newProduct);
     return data
+};
+
+export const updateProduct = async ({ id, body }: { id: number, body: ProductBody }): Promise<Product> => {
+    const { data } = await api.put<Product>(`/products/${id}`, body)
+    return data
 }
+
+export const deleteProduct = async (productId: number): Promise<void> => {
+    await api.delete(`/products/${productId}`)
+};

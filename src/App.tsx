@@ -2,15 +2,18 @@ import { Button, Flex, Stack, Title, Table as TableM } from "@mantine/core";
 import { HiMiniPlusCircle, HiMiniPencilSquare, HiOutlineXMark } from "react-icons/hi2";
 import { useState } from "react";
 import { Table } from "./ui/Table";
-import { useGetProducts } from "./queries";
+import { useDeleteProducts, useGetProducts } from "./queries";
 import { LoaderWithError } from "./ui/LoaderWithError";
 import { CustomPagination } from "./export-ui/CustopPagination";
 import { modals } from "@mantine/modals";
 import { CreateProduct } from "./components/CreateProduct";
+import UpdateProduct from "./components/UpdateProduct";
+import type { Product } from "./types";
 
 const App = () => {
   const [activePage, setActivePage] = useState(1);
   const ITEMS_PER_PAGE = 10;
+  const { mutate: deleteProduct } = useDeleteProducts();
 
   const { data, isLoading, error } = useGetProducts({
     activePage,
@@ -29,15 +32,15 @@ const App = () => {
       <TableM.Td>{product.description}</TableM.Td>
       <TableM.Td>
         <Flex align="center" gap="10">
-          <Button size="xs" variant="light">
+          <Button size="xs" variant="light" onClick={() => editProduct(product)} >
             <HiMiniPencilSquare />
           </Button>
-          <Button size="xs">
+          <Button size="xs" onClick={() => confirmDeleteProduct(product.id)}>
             <HiOutlineXMark />
           </Button>
         </Flex>
       </TableM.Td>
-    </TableM.Tr>
+    </TableM.Tr >
   ));
 
   const createProduct = () => {
@@ -45,7 +48,27 @@ const App = () => {
       children: <CreateProduct />,
       title: 'Create Product'
     })
+  };
+
+  const editProduct = (product: Product) => {
+    modals.open({
+      title: 'Edit Product',
+      children: <UpdateProduct product={product} />
+    })
   }
+
+  const confirmDeleteProduct = (productId: number) => {
+    modals.openConfirmModal({
+      title: 'Delete Product',
+      children: 'Are you sure you want to delete this product?',
+      labels: { confirm: 'Delete', cancel: 'Cancel' },
+      confirmProps: { color: 'red' },
+      cancelProps: { color: 'blue' },
+      onConfirm: () => deleteProduct(productId),
+    });
+  };
+
+  // 
 
   return (
     <div className="container">

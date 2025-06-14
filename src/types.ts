@@ -48,3 +48,8 @@ export type ProductFormProps = {
   initialValues: INITIAL_VALUE;
   onSubmit: (values: INITIAL_VALUE) => void;
 };
+
+export type UpdateBody = {
+  title: string;
+  price: number;
+};
